@@ -17,14 +17,21 @@ public class Main extends JFrame {
         setIconImage(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/icon/run.png"))).getImage());
         setLocationRelativeTo(null);
         setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(Main.this, "确定退出程序？", "退出程序", JOptionPane.OK_CANCEL_OPTION);
+                if (result == JOptionPane.OK_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        String[] img = new String[]{"bg1.jpg", "bg2.jpg", "bg3.jpg", "bg4.png", "bg5.jpg", "bg6.jpg", "bg7.jpg", "bg8.jpg", "bg9.png", "bg10.png"};
-
-        JLabel label = new JLabel(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/image/" + img[next()]))));
+        JLabel label = new JLabel(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/bg/" + next() + ".jpg"))));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(label, BorderLayout.CENTER);
 
@@ -33,7 +40,7 @@ public class Main extends JFrame {
                 if (isControl) {
                     isControl = false;
                     isClick = !isClick;
-                    label.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/image/" + img[next()]))));
+                    label.setIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getResource("/bg/" + next() + ".jpg"))));
                     refreshUI();
                 }
             }
@@ -66,7 +73,7 @@ public class Main extends JFrame {
                         refreshUI();
                         timer.cancel();
                     }
-                }, 1000);
+                }, 1200);
             }
         });
 
@@ -84,10 +91,10 @@ public class Main extends JFrame {
         }
     }
 
-    private int next() {
+    private static int next() {
         times += 1;
         if (times >= 10) {
-            times = 0;
+            times = 1;
         }
         return times;
     }
@@ -109,7 +116,7 @@ public class Main extends JFrame {
             }
             while (true) {
                 try {
-                    Thread.sleep((int) (Math.random() * 500 + 100));
+                    Thread.sleep((int) (Math.random() * 200 + 100));
                     if (isClick) {
                         robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
