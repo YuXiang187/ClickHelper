@@ -91,7 +91,7 @@ public class Main extends JFrame {
         }
     }
 
-    private static int next() {
+    private int next() {
         times += 1;
         if (times >= 10) {
             times = 1;
